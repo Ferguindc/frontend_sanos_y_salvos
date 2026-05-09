@@ -7,6 +7,7 @@ export default function MapSection({ setShowMap }) {
   const [loading, setLoading] = useState(true);
 
   const API_BASE_URL = 'http://localhost:8000/api/v1'; // Cambiar según tu backend Django
+  const MAPBOX_TOKEN = import.meta.env.VITE_maptoken; // Asegúrate de tener esto en tu .env
 
   useEffect(() => {
     // Cargar ubicaciones del backend

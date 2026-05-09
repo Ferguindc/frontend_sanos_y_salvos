@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import './MapSection.css';
+import 'leaflet/dist/leaflet.css';
+import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 
 export default function MapSection({ setShowMap }) {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [loading, setLoading] = useState(true);
+  const MAPBOX_TOKEN = import.meta.env.VITE_maptoken;
 
   const API_BASE_URL = 'http://localhost:8000/api'; // Cambiar según tu backend Django
 
@@ -12,7 +15,7 @@ export default function MapSection({ setShowMap }) {
     // Cargar ubicaciones del backend
     const fetchLocations = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/locations/`);
+        const response = await fetch(`${API_BASE_URL}/ubicaciones/`);
         if (!response.ok) throw new Error('Failed to fetch locations');
         const data = await response.json();
         setLocations(data.results);
@@ -65,8 +68,7 @@ export default function MapSection({ setShowMap }) {
       
       <div className="map-container">
         <div className="map-header">
-          <h2>Find Our Locations</h2>
-          <p>Visit any of our pet care centers</p>
+          <h2>Encuentra a tu mascota</h2>
         </div>
 
         {loading ? (
@@ -74,7 +76,7 @@ export default function MapSection({ setShowMap }) {
         ) : (
           <div className="map-content">
             <div className="map-sidebar">
-              <h3>Our Branches</h3>
+              <h3>mascotas perdidas</h3>
               <div className="locations-list">
                 {locations.map(location => (
                   <div
@@ -92,37 +94,26 @@ export default function MapSection({ setShowMap }) {
                 ))}
               </div>
             </div>
+            
+
 
             <div className="map-display">
-              {selectedLocation && (
-                <div className="map-card">
-                  <div className="map-placeholder">
-                    <div className="map-marker">📍</div>
-                    <p>Map View</p>
-                    <small>Latitude: {selectedLocation.lat}</small>
-                    <small>Longitude: {selectedLocation.lng}</small>
-                  </div>
+    
+                <MapContainer center={[selectedLocation.latitud, selectedLocation.longitud]} zoom={13} style={{ height: '100%', width: '100%' }}>
+                    <TileLayer
+                
+                        url= {`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${MAPBOX_TOKEN}`}
+                        id="mapbox/streets-v11"
+                        tileSize={512}
+                        zoomOffset={-1}
+            
+                    />
+                    <Marker position={[selectedLocation.latitud, selectedLocation.longitud]} />
+                </MapContainer>
+            
+    
+              
 
-                  <div className="location-details">
-                    <h3>{selectedLocation.name}</h3>
-                    <div className="detail-row">
-                      <span className="icon">📍</span>
-                      <span>{selectedLocation.address}</span>
-                    </div>
-                    <div className="detail-row">
-                      <span className="icon">📞</span>
-                      <span>{selectedLocation.phone}</span>
-                    </div>
-                    <div className="detail-row">
-                      <span className="icon">✉️</span>
-                      <span>{selectedLocation.email}</span>
-                    </div>
-                    <button className="get-directions">
-                      Get Directions
-                    </button>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         )}
