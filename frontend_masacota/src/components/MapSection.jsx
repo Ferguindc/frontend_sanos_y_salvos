@@ -6,7 +6,7 @@ export default function MapSection({ setShowMap }) {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const API_BASE_URL = 'http://localhost:8000/api'; // Cambiar según tu backend Django
+  const API_BASE_URL = 'http://localhost:8000/api/v1'; // Cambiar según tu backend Django
 
   useEffect(() => {
     // Cargar ubicaciones del backend
@@ -99,15 +99,15 @@ export default function MapSection({ setShowMap }) {
                   <div className="map-placeholder">
                     <div className="map-marker">📍</div>
                     <p>Map View</p>
-                    <small>Latitude: {selectedLocation.lat}</small>
-                    <small>Longitude: {selectedLocation.lng}</small>
+                    <small>Latitude: {selectedLocation.latitud}</small>
+                    <small>Longitude: {selectedLocation.longitud}</small>
                   </div>
 
                   <div className="location-details">
-                    <h3>{selectedLocation.name}</h3>
+                    <h3>{selectedLocation.titulo}</h3>
                     <div className="detail-row">
                       <span className="icon">📍</span>
-                      <span>{selectedLocation.address}</span>
+                      <span>{selectedLocation.descripcion}</span>
                     </div>
                     <div className="detail-row">
                       <span className="icon">📞</span>

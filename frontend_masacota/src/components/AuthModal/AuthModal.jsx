@@ -7,6 +7,7 @@ export default function AuthModal({ isOpen, onClose }) {
     nombre: '',
     correo: '',
     contraseña: '',
+    contraseña_confirmar: '',
     rut: '',
     comuna: '',
     dirección: ''
@@ -16,8 +17,52 @@ export default function AuthModal({ isOpen, onClose }) {
 
   const API_BASE_URL = 'http://localhost:8000/api';
 
+  // Validar RUT chileno
+  const validateRUT = (rut) => {
+    if (!rut) return false;
+    // Solo números (sin guión ni puntos)
+    const rutLimpio = rut.replace(/[^0-9]/g, '');
+    if (rutLimpio.length < 7 || rutLimpio.length > 8) {
+      return false;
+    }
+    return true;
+  };
+
+  // Formatear RUT chileno
+  const formatRUT = (rut) => {
+    const rutLimpio = rut.replace(/[^0-9]/g, '');
+    if (rutLimpio.length > 8) return rut;
+    
+    if (rutLimpio.length <= 1) {
+      return rutLimpio;
+    }
+    
+    let rutFormato = '';
+    for (let i = 0; i < rutLimpio.length - 1; i++) {
+      rutFormato += rutLimpio[i];
+      if ((rutLimpio.length - i - 1) % 3 === 0 && i !== rutLimpio.length - 2) {
+        rutFormato += '.';
+      }
+    }
+    rutFormato += '-' + rutLimpio[rutLimpio.length - 1];
+    return rutFormato;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
+    // Validar RUT: solo números y formatear automáticamente
+    if (name === 'rut') {
+      const rutLimpio = value.replace(/[^0-9]/g, '');
+      if (rutLimpio.length <= 8) {
+        setFormData(prev => ({
+          ...prev,
+          [name]: formatRUT(rutLimpio)
+        }));
+      }
+      return;
+    }
+
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -34,12 +79,20 @@ export default function AuthModal({ isOpen, onClose }) {
         setError('Todos los campos son requeridos para registrarse');
         return false;
       }
+      if (!validateRUT(formData.rut)) {
+        setError('RUT inválido. Use formato: XX.XXX.XXX-X');
+        return false;
+      }
       if (formData.correo.length < 5) {
         setError('Correo inválido');
         return false;
       }
       if (formData.contraseña.length < 6) {
         setError('La contraseña debe tener al menos 6 caracteres');
+        return false;
+      }
+      if (formData.contraseña !== formData.contraseña_confirmar) {
+        setError('Las contraseñas no coinciden');
         return false;
       }
     }
@@ -84,6 +137,7 @@ export default function AuthModal({ isOpen, onClose }) {
         nombre: '',
         correo: '',
         contraseña: '',
+        contraseña_confirmar: '',
         rut: '',
         comuna: '',
         dirección: ''
@@ -143,12 +197,12 @@ export default function AuthModal({ isOpen, onClose }) {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="rut">RUT</label>
+                  <label htmlFor="rut">RUT (Sin puntos ni guión)</label>
                   <input
                     type="text"
                     id="rut"
                     name="rut"
-                    placeholder="12345678-9"
+                    placeholder="12345678"
                     value={formData.rut}
                     onChange={handleChange}
                     disabled={loading}
@@ -210,6 +264,22 @@ export default function AuthModal({ isOpen, onClose }) {
               required
             />
           </div>
+
+          {!isLogin && (
+            <div className="form-group">
+              <label htmlFor="contraseña_confirmar">Confirmar Contraseña</label>
+              <input
+                type="password"
+                id="contraseña_confirmar"
+                name="contraseña_confirmar"
+                placeholder="••••••••"
+                value={formData.contraseña_confirmar}
+                onChange={handleChange}
+                disabled={loading}
+                required
+              />
+            </div>
+          )}
 
           <button 
             type="submit" 

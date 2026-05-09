@@ -15,9 +15,9 @@ export default function MapSection({ setShowMap }) {
         const response = await fetch(`${API_BASE_URL}/locations/`);
         if (!response.ok) throw new Error('Failed to fetch locations');
         const data = await response.json();
-        setLocations(data);
-        if (data.length > 0) {
-          setSelectedLocation(data[0]);
+        setLocations(data.results);
+        if (data.results.length > 0) {
+          setSelectedLocation(data.results[0]);
         }
       } catch (error) {
         console.error('Error fetching locations:', error);
@@ -84,8 +84,8 @@ export default function MapSection({ setShowMap }) {
                   >
                     <div className="location-icon">📍</div>
                     <div className="location-info">
-                      <h4>{location.name}</h4>
-                      <p>{location.address}</p>
+                      <h4>{location.titulo}</h4>
+                      <p>{location.descripcion}</p>
                       <p className="location-phone">{location.phone}</p>
                     </div>
                   </div>
