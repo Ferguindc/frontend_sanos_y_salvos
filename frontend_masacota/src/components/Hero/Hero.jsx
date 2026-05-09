@@ -5,8 +5,8 @@ export default function Hero({ setShowLogin, setShowMap }) {
     <section className="hero">
       <div className="hero-content">
         <div className="hero-text">
-          <p className="hero-subtitle">// Enjoy Your Holiday //</p>
-          <h1 className="hero-title">We Keep Them<br />Happy Anytime.</h1>
+          <p className="hero-subtitle">// Encuentra a tu mascota //</p>
+          <h1 className="hero-title">Sanos y Salvos</h1>
           <div className="hero-buttons">
             <button className="btn-primary" onClick={() => setShowLogin(false)}>
               Make Appointment

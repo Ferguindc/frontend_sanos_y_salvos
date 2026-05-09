@@ -7,40 +7,41 @@ export default function LoginSection({ setShowLogin }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const API_BASE_URL = 'http://localhost:8000/api'; // Cambiar según tu backend Django
+  const API_BASE_URL = 'http://localhost:8000';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
+    const payload = { email, password };
+    console.log('📤 Enviando:', payload);
+
     try {
       const response = await fetch(`${API_BASE_URL}/login/`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
 
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
-
       const data = await response.json();
-      
-      // Guardar token si viene en la respuesta
-      if (data.token) {
-        localStorage.setItem('authToken', data.token);
+      console.log('📥 Respuesta:', data);
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Login failed');
       }
 
-      alert('Login successful!');
+      if (data.access) {
+        localStorage.setItem('access_token', data.access);
+        localStorage.setItem('refresh_token', data.refresh);
+        localStorage.setItem('user', JSON.stringify(data.user));
+      }
+
+      alert('✅ Login successful!');
       setShowLogin(false);
     } catch (err) {
-      setError(err.message || 'Error during login. Please try again.');
+      console.error('❌ Error:', err);
+      setError(err.message || 'Error during login');
     } finally {
       setLoading(false);
     }
@@ -63,7 +64,7 @@ export default function LoginSection({ setShowLogin }) {
               <input
                 type="email"
                 id="email"
-                placeholder="Enter your email"
+                placeholder="matias@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required

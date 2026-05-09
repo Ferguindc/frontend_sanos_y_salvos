@@ -2,12 +2,12 @@ import { useState } from 'react';
 import './LoginSection.css';
 
 export default function LoginSection({ setShowLogin }) {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');  // ← CAMBIAR a username
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const API_BASE_URL = 'http://localhost:8000/api'; // Cambiar según tu backend Django
+  const API_BASE_URL = 'http://localhost:8001';  // ← SIN /api
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,20 +21,23 @@ export default function LoginSection({ setShowLogin }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: email,
+          username: username,  // ← CAMBIAR de email a username
           password: password,
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Login failed');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Login failed');
       }
 
       const data = await response.json();
       
-      // Guardar token si viene en la respuesta
-      if (data.token) {
-        localStorage.setItem('authToken', data.token);
+      // Guardar tokens correctamente
+      if (data.access) {  // ← CAMBIAR de data.token a data.access
+        localStorage.setItem('access_token', data.access);
+        localStorage.setItem('refresh_token', data.refresh);
+        localStorage.setItem('user', JSON.stringify(data.user));
       }
 
       alert('Login successful!');
@@ -59,13 +62,13 @@ export default function LoginSection({ setShowLogin }) {
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="email">Email Address</label>
+              <label htmlFor="username">Username</label>  {/* ← CAMBIAR de email a username */}
               <input
-                type="email"
-                id="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                id="username"
+                placeholder="Enter your username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
                 disabled={loading}
               />

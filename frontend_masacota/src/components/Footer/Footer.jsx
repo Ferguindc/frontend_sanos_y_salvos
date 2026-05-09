@@ -5,10 +5,10 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-section">
-          <h3>CarePress</h3>
-          <p>Pet Care Website</p>
+          <h3>Sanos y Salvos</h3>
+          <p>Tu mascota nos importa</p>
           <p className="footer-description">
-            Providing the best care and services for your beloved pets since 2020.
+            Ayudando a las personas a reencontrarse con sus mascotas perdidas.
           </p>
           <div className="social-links">
             <a href="#" title="Facebook">f</a>

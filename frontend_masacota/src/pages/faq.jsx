@@ -5,43 +5,43 @@ export default function FAQ() {
   const faqs = [
     {
       id: 1,
-      question: '¿Cuáles son tus horarios de atención?',
-      answer: 'Estamos abiertos de lunes a domingo de 9:00 AM a 6:00 PM. En festivos especiales nos encontramos de 10:00 AM a 4:00 PM.'
+      question: '¿Cómo puedo publicar una mascota perdida?',
+      answer: 'Debes ingresar a la sección “Reportar mascota perdida”, completar el formulario con los datos de tu mascota, subir fotografías recientes y agregar la ubicación donde fue vista por última vez.'
     },
     {
       id: 2,
-      question: '¿Qué servicios de cuidado ofrecen para mascotas?',
-      answer: 'Ofrecemos alojamiento para perros, cuidado diurno, baño y aseo, adiestramiento básico, y servicio de adopción. Todos nuestros servicios incluyen cuidado profesional y amoroso.'
+      question: '¿La plataforma tiene algún costo?',
+      answer: 'No, publicar reportes de mascotas perdidas o encontradas es completamente gratuito para todos los usuarios.'
     },
     {
       id: 3,
-      question: '¿Cómo puedo reservar el servicio de alojamiento?',
-      answer: 'Puedes reservar llamando al +098987 876 767, enviando un email a info@website.com, o visitando cualquiera de nuestras sucursales. Te recomendamos hacerlo con anticipación, especialmente en épocas de vacaciones.'
+      question: '¿Qué información debo incluir en la publicación?',
+      answer: 'Se recomienda agregar nombre, especie, raza, color, tamaño, características distintivas, fecha de pérdida, última ubicación conocida y un número de contacto.'
     },
     {
       id: 4,
-      question: '¿Qué documentos necesito para adoptar una mascota?',
-      answer: 'Para adoptar necesitas presentar un documento de identidad vigente, comprobante de domicilio, y llenar un formulario de adopción. También realizamos una pequeña entrevista para asegurar que sea el hogar adecuado para tu mascota.'
+      question: '¿Puedo publicar una mascota encontrada',
+      answer: 'Sí. Si encontraste una mascota, puedes crear una publicación en la sección “Mascotas encontradas” para ayudar a localizar a sus dueños.'
     },
     {
       id: 5,
-      question: '¿Cuáles son tus tarifas?',
-      answer: 'Nuestras tarifas varían según el servicio. El alojamiento diario cuesta desde $30, el baño desde $20. Para consultar tarifas específicas, contáctanos directamente.'
+      question: '¿Cómo contacto a la persona que publicó un aviso?',
+      answer: 'Cada publicación incluye información de contacto proporcionada por el usuario, como teléfono, correo electrónico o mensajería interna de la plataforma.'
     },
     {
       id: 6,
-      question: '¿Puedo visitar a mi mascota mientras esté alojada?',
-      answer: 'Sí, puedes visitarla cuando lo desees. Recomendamos llamar con anticipación para coordinar el horario que mejor te convenga.'
+      question: '¿Qué hago si mi mascota ya apareció?',
+      answer: 'Puedes marcar la publicación como “Resuelta” o eliminarla desde tu perfil para informar a la comunidad que la mascota ya fue encontrada.'
     },
     {
       id: 7,
-      question: '¿Ofrecen servicio de emergencia 24/7?',
-      answer: 'Sí, contamos con personal de emergencia disponible 24 horas para atender cualquier situación urgente con tu mascota.'
+      question: '¿La plataforma funciona en todo Chile?',
+      answer: 'Sí, la plataforma permite publicar y buscar mascotas perdidas o encontradas en cualquier región y ciudad de Chile.'
     },
     {
       id: 8,
-      question: '¿Qué debo llevar cuando dejo mi perro en alojamiento?',
-      answer: 'Te recomendamos traer alimento de tu mascota (o podemos proporcionar), medicinas si es necesario, juguetes favoritos, y mantas con su olor para que se sienta cómodo.'
+      question: '¿Qué recomendaciones ayudan a encontrar una mascota más rápido?',
+      answer: 'Subir fotos claras, entregar información detallada, compartir la publicación en redes sociales y mantener actualizados los datos de contacto aumenta considerablemente las posibilidades de encontrarla.'
     }
   ];
 

@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-section">
-          <h3>CarePress</h3>
+          <h3>Sanos y salvos</h3>
           <p>Pet Care Website</p>
           <p className="footer-description">
             Providing the best care and services for your beloved pets since 2020.

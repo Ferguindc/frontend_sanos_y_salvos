@@ -20,6 +20,9 @@
   max-width: 450px;
   position: relative;
   animation: slideUp 0.3s ease;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes slideUp {
@@ -53,14 +56,15 @@
 .auth-tabs {
   display: flex;
   border-bottom: 2px solid #e0e0e0;
+  flex-shrink: 0;
 }
 
 .auth-tab {
   flex: 1;
-  padding: 20px;
+  padding: 15px;
   background: none;
   border: none;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: #95a5a6;
   cursor: pointer;
@@ -81,27 +85,30 @@
 }
 
 .auth-form {
-  padding: 30px;
+  padding: 20px 25px;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .form-group label {
   display: block;
   color: #2c3e50;
   font-weight: 600;
-  margin-bottom: 8px;
-  font-size: 14px;
+  margin-bottom: 6px;
+  font-size: 13px;
 }
 
 .form-group input {
   width: 100%;
-  padding: 12px 15px;
+  padding: 10px 12px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 13px;
   transition: all 0.3s;
   font-family: inherit;
 }
@@ -120,31 +127,31 @@
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 15px;
+  gap: 12px;
 }
 
 .error-message {
   background-color: #fee;
   color: #c33;
-  padding: 12px 15px;
+  padding: 10px 12px;
   border-radius: 8px;
-  margin-bottom: 20px;
-  font-size: 14px;
+  margin-bottom: 15px;
+  font-size: 13px;
   border-left: 4px solid #c33;
 }
 
 .auth-submit-btn {
   width: 100%;
-  padding: 12px 20px;
+  padding: 11px 20px;
   background: linear-gradient(135deg, #ff1493, #ff69b4);
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 
 .auth-submit-btn:hover:not(:disabled) {
@@ -158,13 +165,15 @@
 }
 
 .auth-footer {
-  padding: 0 30px 30px;
+  padding: 0 25px 20px;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .auth-footer p {
-  font-size: 14px;
+  font-size: 13px;
   color: #555;
+  margin: 0;
 }
 
 .auth-toggle-btn {
@@ -204,20 +213,20 @@
   }
 
   .auth-form {
-    padding: 20px;
+    padding: 15px 18px;
   }
 
   .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 12px;
   }
 
   .form-row {
     grid-template-columns: 1fr;
-    gap: 15px;
+    gap: 12px;
   }
 
   .auth-footer {
-    padding: 0 20px 20px;
+    padding: 0 18px 15px;
   }
 
   .auth-footer p {
@@ -234,4 +243,23 @@
     right: 10px;
     font-size: 20px;
   }
+}
+
+/* Scrollbar personalizado */
+.auth-form::-webkit-scrollbar {
+  width: 6px;
+}
+
+.auth-form::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.auth-form::-webkit-scrollbar-thumb {
+  background: #ff1493;
+  border-radius: 10px;
+}
+
+.auth-form::-webkit-scrollbar-thumb:hover {
+  background: #ff69b4;
 }

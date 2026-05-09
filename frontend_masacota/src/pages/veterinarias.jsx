@@ -113,7 +113,7 @@ export default function Veterinarias() {
         <div className="veterinarias-notice">
           <h3>💡 Información Importante</h3>
           <p>
-            Todas nuestras clínicas cuentan con personal altamente capacitado y equipamiento de última generación. 
+            Todas las clínicas cuentan con personal altamente capacitado y equipamiento de última generación. 
             Recomendamos llamar con anticipación para agendar citas, especialmente en emergencias.
           </p>
         </div>
