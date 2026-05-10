@@ -68,12 +68,7 @@ export function ReportForm({ onSuccess }) {
         tamaño: formData.tamaño,
         latitud: parseFloat(formData.latitud),
         longitud: parseFloat(formData.longitud),
-        zona_descripcion: formData.zona_descripcion,
         fecha_reporte: formData.fecha_reporte,
-        // Los datos del usuario autenticado se envían aquí si es necesario
-        contacto_nombre: user?.full_name || user?.nombre || 'No especificado',
-        contacto_telefono: user?.phone || user?.telefono || 'No especificado',
-        contacto_email: user?.email || user?.correo || '',
       });
 
       setSuccessMessage('¡Reporte creado exitosamente! Se publicará en el mapa.');
