@@ -143,6 +143,26 @@
   box-shadow: 0 4px 15px rgba(45, 64, 89, 0.3);
 }
 
+.admin-btn {
+  background: linear-gradient(135deg, #FF844B, #FF6B2C);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  white-space: nowrap;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.admin-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 132, 75, 0.3);
+}
+
 .auth-buttons {
   display: flex;
   gap: 10px;

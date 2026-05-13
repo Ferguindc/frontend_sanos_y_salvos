@@ -91,13 +91,22 @@ export default function Header({ onNavigate, currentPage }) {
           </ul>
 
           {!isAuthenticated ? (
-            <button 
-              className="auth-btn"
-              onClick={() => setIsAuthModalOpen(true)}
-              title="Iniciar Sesión"
-            >
-              🔐 Iniciar Sesión
-            </button>
+            <>
+              <button 
+                className="auth-btn"
+                onClick={() => setIsAuthModalOpen(true)}
+                title="Iniciar Sesión"
+              >
+                🔐 Iniciar Sesión
+              </button>
+              <a 
+                href="#admin"
+                className="admin-btn"
+                title="Panel Administrativo"
+              >
+                🛡️ Admin
+              </a>
+            </>
           ) : (
             <div className="auth-buttons">
               <button 

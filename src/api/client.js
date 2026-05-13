@@ -3,7 +3,10 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 
 // Headers por defecto
 const getHeaders = () => {
-  const token = localStorage.getItem('authToken');
+  const authToken = localStorage.getItem('authToken');
+  const adminToken = localStorage.getItem('adminToken');
+  const token = adminToken || authToken;
+  
   return {
     'Content-Type': 'application/json',
     ...(token && { 'Authorization': `Bearer ${token}` })
@@ -98,9 +101,57 @@ export const healthAPI = {
     apiCall('/health')
 };
 
+// ==================== ADMINISTRADOR ====================
+export const adminAPI = {
+  login: (username, password) => 
+    apiCall('/admin/login', {
+      method: 'POST',
+      body: JSON.stringify({ username, password })
+    }),
+  
+  getDashboard: () => 
+    apiCall('/admin/dashboard'),
+  
+  getPets: (filters = {}) => {
+    const params = new URLSearchParams(filters);
+    return apiCall(`/admin/pets?${params}`);
+  },
+  
+  getPetById: (id) => 
+    apiCall(`/admin/pets/${id}`),
+  
+  approvePet: (id, notes = '') => 
+    apiCall(`/admin/pets/${id}/approve`, {
+      method: 'PUT',
+      body: JSON.stringify({ notes })
+    }),
+  
+  rejectPet: (id, reason = '') => 
+    apiCall(`/admin/pets/${id}/reject`, {
+      method: 'PUT',
+      body: JSON.stringify({ reason })
+    }),
+  
+  recoverPet: (id, clinicId, recoveryDate) => 
+    apiCall(`/admin/pets/${id}/recover`, {
+      method: 'PUT',
+      body: JSON.stringify({ clinicId, recoveryDate })
+    }),
+  
+  deletePet: (id) => 
+    apiCall(`/admin/pets/${id}`, { method: 'DELETE' }),
+  
+  updatePetNotes: (id, notes) => 
+    apiCall(`/admin/pets/${id}/notes`, {
+      method: 'PUT',
+      body: JSON.stringify({ notes })
+    })
+};
+
 export default {
   authAPI,
   petsAPI,
   clinicsAPI,
+  adminAPI,
   healthAPI
 };

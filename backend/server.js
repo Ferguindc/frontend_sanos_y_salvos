@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import petsRoutes from './routes/pets.js';
 import clinicsRoutes from './routes/clinics.js';
+import adminRoutes from './routes/admin.js';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/pets', petsRoutes);
 app.use('/api/clinics', clinicsRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Manejo de errores
 app.use((req, res) => {
