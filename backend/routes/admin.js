@@ -1,11 +1,75 @@
 import express from 'express';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const router = express.Router();
+
+// Obtener ruta del directorio actual
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Credenciales admin hardcodeadas (en producción usar base de datos)
 const ADMIN_CREDENTIALS = {
   username: 'admin',
   password: 'admin'
+};
+
+// Ruta para almacenar estados de reportes
+const ADMIN_STATE_FILE = path.join(__dirname, '../data/admin-state.json');
+
+// Crear directorio de datos si no existe
+const ensureDataDir = () => {
+  const dataDir = path.join(__dirname, '../data');
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
+};
+
+// Cargar o crear estado admin
+const getAdminState = () => {
+  ensureDataDir();
+  if (fs.existsSync(ADMIN_STATE_FILE)) {
+    try {
+      return JSON.parse(fs.readFileSync(ADMIN_STATE_FILE, 'utf-8'));
+    } catch (error) {
+      console.error('Error leyendo admin state:', error);
+      return { reportStates: {}, deletedReports: [] };
+    }
+  }
+  return { reportStates: {}, deletedReports: [] };
+};
+
+// Guardar estado admin
+const saveAdminState = (state) => {
+  ensureDataDir();
+  fs.writeFileSync(ADMIN_STATE_FILE, JSON.stringify(state, null, 2), 'utf-8');
+};
+
+// Consultar geoservice
+const GEO_SERVICE_URL = process.env.GEO_SERVICE_URL || 'http://localhost:8001/api';
+
+const fetchFromGeoService = async (endpoint) => {
+  try {
+    const response = await fetch(`${GEO_SERVICE_URL}${endpoint}`);
+    if (!response.ok) throw new Error(`Error ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error(`Error consultando GeoService: ${error.message}`);
+    return null;
+  }
+};
+
+const deleteFromGeoService = async (reporteId) => {
+  try {
+    const response = await fetch(`${GEO_SERVICE_URL}/ubicaciones/${reporteId}/`, {
+      method: 'DELETE'
+    });
+    return response.ok;
+  } catch (error) {
+    console.error(`Error eliminando en GeoService: ${error.message}`);
+    return false;
+  }
 };
 
 // Middleware para verificar token admin (simple simulación)
@@ -40,254 +104,400 @@ router.post('/login', (req, res) => {
   }
 });
 
-// GET /api/admin/dashboard - Estadísticas del dashboard
-router.get('/dashboard', isAdmin, (req, res) => {
-  res.json({
-    success: true,
-    data: {
-      totalPending: 12,
-      totalMissing: 45,
-      totalFound: 23,
-      totalRecovered: 18,
-      thisMonth: {
-        missing: 8,
-        found: 5,
-        recovered: 3
-      },
-      recentActivity: [
-        {
-          id: 1,
-          type: 'missing',
-          petName: 'Bruno',
-          reporter: 'María González',
-          date: '2026-05-12T10:30:00Z',
-          status: 'pending'
-        },
-        {
-          id: 2,
-          type: 'found',
-          petName: 'Luna',
-          reporter: 'Juan Pérez',
-          date: '2026-05-11T15:45:00Z',
-          status: 'pending'
+// GET /api/admin/dashboard - Estadísticas del dashboard (datos reales de GeoService)
+router.get('/dashboard', isAdmin, async (req, res) => {
+  try {
+    // Obtener todos los reportes de geoservice
+    const locationData = await fetchFromGeoService('/ubicaciones/');
+    const adminState = getAdminState();
+    
+    if (!locationData || !locationData.results) {
+      return res.json({
+        success: true,
+        data: {
+          totalPending: 0,
+          totalMissing: 0,
+          totalFound: 0,
+          totalRecovered: 0,
+          thisMonth: {
+            missing: 0,
+            found: 0,
+            recovered: 0
+          },
+          recentActivity: []
         }
-      ]
+      });
     }
-  });
-});
 
-// GET /api/admin/pets - Obtener todos los reportes
-router.get('/pets', isAdmin, (req, res) => {
-  const { status = 'all', type = 'all', search = '' } = req.query;
-
-  // Datos simulados
-  const allPets = [
-    {
-      id: 1,
-      name: 'Bruno',
-      type: 'Perro',
-      breed: 'Golden Retriever',
-      color: 'Dorado',
-      reportType: 'missing',
-      status: 'pending',
-      reporter: 'María González',
-      email: 'maria@ejemplo.com',
-      phone: '+1-555-0001',
-      description: 'Perro desaparecido en zona centro',
-      image: 'https://images.unsplash.com/photo-1633722715463-d30628519d24?w=200&h=200&fit=crop',
-      location: 'Zona Centro',
-      reportDate: '2026-05-12T10:30:00Z',
-      clinics: [
-        { id: 1, name: 'Clínica Centro', foundAt: null }
-      ]
-    },
-    {
-      id: 2,
-      name: 'Luna',
-      type: 'Gato',
-      breed: 'Siames',
-      color: 'Gris y blanco',
-      reportType: 'found',
-      status: 'pending',
-      reporter: 'Juan Pérez',
-      email: 'juan@ejemplo.com',
-      phone: '+1-555-0002',
-      description: 'Gato encontrado en barrio norte',
-      image: 'https://images.unsplash.com/photo-1574158622682-e40ad41168d5?w=200&h=200&fit=crop',
-      location: 'Barrio Norte',
-      reportDate: '2026-05-11T15:45:00Z',
-      clinics: []
-    },
-    {
-      id: 3,
-      name: 'Max',
-      type: 'Perro',
-      breed: 'Pastor Alemán',
-      color: 'Marrón',
-      reportType: 'missing',
-      status: 'approved',
-      reporter: 'Ana Rodríguez',
-      email: 'ana@ejemplo.com',
-      phone: '+1-555-0003',
-      description: 'Perro desaparecido hace 3 días',
-      image: 'https://images.unsplash.com/photo-1633722715463-d30628519d24?w=200&h=200&fit=crop',
-      location: 'Zona Este',
-      reportDate: '2026-05-10T08:00:00Z',
-      clinics: [
-        { id: 2, name: 'Clínica Norte', foundAt: '2026-05-12T14:20:00Z' }
-      ]
-    }
-  ];
-
-  let filtered = allPets;
-
-  if (status !== 'all') {
-    filtered = filtered.filter(pet => pet.status === status);
-  }
-
-  if (type !== 'all') {
-    filtered = filtered.filter(pet => pet.reportType === type);
-  }
-
-  if (search) {
-    filtered = filtered.filter(pet =>
-      pet.name.toLowerCase().includes(search.toLowerCase()) ||
-      pet.reporter.toLowerCase().includes(search.toLowerCase())
+    // Procesar datos reales
+    const allReports = locationData.results.filter(report => 
+      !adminState.deletedReports.includes(report.id)
     );
-  }
 
-  res.json({
-    success: true,
-    count: filtered.length,
-    data: filtered
-  });
+    const now = new Date();
+    const currentMonth = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+
+    let totalMissing = 0, totalFound = 0, totalPending = 0;
+    let monthMissing = 0, monthFound = 0;
+    const recentActivity = [];
+
+    allReports.forEach(report => {
+      const reportState = adminState.reportStates[report.id] || { status: 'pending' };
+      const isMissing = report.tipo_reporte === 'perdida';
+      
+      if (isMissing) totalMissing++;
+      else totalFound++;
+
+      if (reportState.status === 'pending') totalPending++;
+
+      const reportDate = report.fecha_reporte ? report.fecha_reporte.split('T')[0] : '';
+      if (reportDate.startsWith(currentMonth)) {
+        if (isMissing) monthMissing++;
+        else monthFound++;
+      }
+
+      if (recentActivity.length < 10) {
+        recentActivity.push({
+          id: report.id,
+          type: isMissing ? 'missing' : 'found',
+          petName: report.tipo_animal === 'perro' ? 'Perro' : report.tipo_animal === 'gato' ? 'Gato' : 'Mascota',
+          reporter: 'Usuario',
+          date: report.fecha_reporte || new Date().toISOString(),
+          status: reportState.status
+        });
+      }
+    });
+
+    res.json({
+      success: true,
+      data: {
+        totalPending,
+        totalMissing,
+        totalFound,
+        totalRecovered: allReports.filter(r => 
+          (adminState.reportStates[r.id] || { status: 'pending' }).status === 'recovered'
+        ).length,
+        thisMonth: {
+          missing: monthMissing,
+          found: monthFound,
+          recovered: 0
+        },
+        recentActivity
+      }
+    });
+  } catch (error) {
+    console.error('Error en dashboard:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error al obtener estadísticas'
+    });
+  }
 });
 
-// GET /api/admin/pets/:id - Obtener detalle de reporte
-router.get('/pets/:id', isAdmin, (req, res) => {
-  const { id } = req.params;
+// GET /api/admin/pets - Obtener todos los reportes (datos reales de GeoService)
+router.get('/pets', isAdmin, async (req, res) => {
+  try {
+    const { status = 'all', type = 'all', search = '' } = req.query;
 
-  // Datos simulados
-  const pet = {
-    id,
-    name: 'Bruno',
-    type: 'Perro',
-    breed: 'Golden Retriever',
-    age: '3 años',
-    color: 'Dorado',
-    microchip: '123ABC456',
-    vaccinated: true,
-    reportType: 'missing',
-    status: 'pending',
-    reporter: {
-      name: 'María González',
-      email: 'maria@ejemplo.com',
-      phone: '+1-555-0001',
-      address: 'Calle Principal 123'
-    },
-    description: 'Perro desaparecido cuando se quedó la puerta abierta',
-    image: 'https://images.unsplash.com/photo-1633722715463-d30628519d24?w=400&h=400&fit=crop',
-    location: {
-      area: 'Zona Centro',
-      lat: 40.7128,
-      lng: -74.0060
-    },
-    reportDate: '2026-05-12T10:30:00Z',
-    clinics: [
-      {
-        id: 1,
-        name: 'Clínica Veterinaria Centro',
-        notified: true,
-        response: 'Sin novedad'
+    // Obtener reportes reales de geoservice
+    const locationData = await fetchFromGeoService('/ubicaciones/');
+    const adminState = getAdminState();
+
+    if (!locationData || !locationData.results) {
+      return res.json({
+        success: true,
+        count: 0,
+        data: []
+      });
+    }
+
+    // Filtrar reportes no eliminados
+    let allPets = locationData.results.filter(report => 
+      !adminState.deletedReports.includes(report.id)
+    ).map(report => {
+      const reportState = adminState.reportStates[report.id] || { status: 'pending', notes: '' };
+      const isMissing = report.tipo_reporte === 'perdida';
+
+      return {
+        id: report.id,
+        name: report.tipo_animal === 'perro' ? 'Perro' : report.tipo_animal === 'gato' ? 'Gato' : 'Mascota',
+        type: report.tipo_animal,
+        breed: report.raza_probable || 'Desconocida',
+        color: report.color || 'No especificado',
+        reportType: isMissing ? 'missing' : 'found',
+        status: reportState.status,
+        reporter: 'Usuario',
+        email: 'usuario@example.com',
+        phone: 'No disponible',
+        description: report.descripcion || report.titulo,
+        image: 'https://images.unsplash.com/photo-1633722715463-d30628519d24?w=200&h=200&fit=crop',
+        location: report.titulo || 'Zona reportada',
+        reportDate: report.fecha_reporte || new Date().toISOString(),
+        latitude: report.latitud,
+        longitude: report.longitud,
+        notes: reportState.notes || '',
+        clinics: []
+      };
+    });
+
+    // Aplicar filtros
+    let filtered = allPets;
+
+    if (status !== 'all') {
+      filtered = filtered.filter(pet => pet.status === status);
+    }
+
+    if (type !== 'all') {
+      filtered = filtered.filter(pet => 
+        (type === 'missing' && pet.reportType === 'missing') ||
+        (type === 'found' && pet.reportType === 'found')
+      );
+    }
+
+    if (search) {
+      filtered = filtered.filter(pet =>
+        pet.name.toLowerCase().includes(search.toLowerCase()) ||
+        pet.reporter.toLowerCase().includes(search.toLowerCase()) ||
+        pet.description.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    res.json({
+      success: true,
+      count: filtered.length,
+      data: filtered
+    });
+  } catch (error) {
+    console.error('Error en GET /pets:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error al obtener reportes'
+    });
+  }
+});
+
+// GET /api/admin/pets/:id - Obtener detalle de reporte (datos reales de GeoService)
+router.get('/pets/:id', isAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const adminState = getAdminState();
+
+    // Obtener el reporte específico de geoservice
+    const locationData = await fetchFromGeoService(`/ubicaciones/${id}/`);
+
+    if (!locationData || adminState.deletedReports.includes(id)) {
+      return res.status(404).json({
+        success: false,
+        message: 'Reporte no encontrado'
+      });
+    }
+
+    const report = locationData.results ? locationData.results[0] : locationData;
+    const reportState = adminState.reportStates[id] || { status: 'pending', notes: '' };
+    const isMissing = report.tipo_reporte === 'perdida';
+
+    const petDetail = {
+      id: report.id,
+      name: report.tipo_animal === 'perro' ? 'Perro' : report.tipo_animal === 'gato' ? 'Gato' : 'Mascota',
+      type: report.tipo_animal,
+      breed: report.raza_probable || 'Desconocida',
+      age: 'No especificado',
+      color: report.color || 'No especificado',
+      microchip: 'No disponible',
+      vaccinated: false,
+      reportType: isMissing ? 'missing' : 'found',
+      status: reportState.status,
+      reporter: {
+        name: 'Usuario',
+        email: 'usuario@example.com',
+        phone: 'No disponible',
+        address: 'No especificada'
       },
-      {
-        id: 2,
-        name: 'Clínica Norte',
-        notified: true,
-        response: 'Sin novedad'
-      }
-    ],
-    notes: 'Se han contactado clínicas locales',
-    attachments: [
-      { id: 1, name: 'documento.pdf', url: '/files/doc.pdf' }
-    ]
-  };
+      description: report.descripcion || report.titulo,
+      image: 'https://images.unsplash.com/photo-1633722715463-d30628519d24?w=400&h=400&fit=crop',
+      location: {
+        area: report.titulo || 'Zona reportada',
+        lat: report.latitud,
+        lng: report.longitud
+      },
+      reportDate: report.fecha_reporte || new Date().toISOString(),
+      clinics: [],
+      notes: reportState.notes || '',
+      attachments: []
+    };
 
-  res.json({
-    success: true,
-    data: pet
-  });
+    res.json({
+      success: true,
+      data: petDetail
+    });
+  } catch (error) {
+    console.error('Error en GET /pets/:id:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error al obtener detalle del reporte'
+    });
+  }
 });
 
 // PUT /api/admin/pets/:id/approve
 router.put('/pets/:id/approve', isAdmin, (req, res) => {
-  const { id } = req.params;
-  const { notes } = req.body;
+  try {
+    const { id } = req.params;
+    const { notes } = req.body;
 
-  // TODO: Actualizar en BD
-  res.json({
-    success: true,
-    message: 'Reporte aprobado',
-    petId: id,
-    newStatus: 'approved',
-    notes
-  });
+    const adminState = getAdminState();
+    
+    // Actualizar estado del reporte
+    adminState.reportStates[id] = {
+      status: 'approved',
+      notes: notes || '',
+      approvedAt: new Date().toISOString()
+    };
+
+    saveAdminState(adminState);
+
+    res.json({
+      success: true,
+      message: 'Reporte aprobado',
+      petId: id,
+      newStatus: 'approved',
+      notes
+    });
+  } catch (error) {
+    console.error('Error en approve:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error al aprobar reporte'
+    });
+  }
 });
 
 // PUT /api/admin/pets/:id/reject
 router.put('/pets/:id/reject', isAdmin, (req, res) => {
-  const { id } = req.params;
-  const { reason } = req.body;
+  try {
+    const { id } = req.params;
+    const { reason } = req.body;
 
-  // TODO: Actualizar en BD
-  res.json({
-    success: true,
-    message: 'Reporte rechazado',
-    petId: id,
-    newStatus: 'rejected',
-    reason
-  });
+    const adminState = getAdminState();
+
+    // Actualizar estado del reporte
+    adminState.reportStates[id] = {
+      status: 'rejected',
+      notes: reason || '',
+      rejectedAt: new Date().toISOString()
+    };
+
+    saveAdminState(adminState);
+
+    res.json({
+      success: true,
+      message: 'Reporte rechazado',
+      petId: id,
+      newStatus: 'rejected',
+      reason
+    });
+  } catch (error) {
+    console.error('Error en reject:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error al rechazar reporte'
+    });
+  }
 });
 
 // PUT /api/admin/pets/:id/recover
 router.put('/pets/:id/recover', isAdmin, (req, res) => {
-  const { id } = req.params;
-  const { clinicId, recoveryDate } = req.body;
+  try {
+    const { id } = req.params;
+    const { clinicId, recoveryDate } = req.body;
 
-  // TODO: Actualizar en BD
-  res.json({
-    success: true,
-    message: 'Mascota marcada como recuperada',
-    petId: id,
-    newStatus: 'recovered',
-    clinicId,
-    recoveryDate
-  });
+    const adminState = getAdminState();
+
+    // Actualizar estado del reporte
+    adminState.reportStates[id] = {
+      status: 'recovered',
+      notes: `Recuperada en clínica ${clinicId || 'No especificada'}`,
+      recoveredAt: recoveryDate || new Date().toISOString(),
+      clinicId
+    };
+
+    saveAdminState(adminState);
+
+    res.json({
+      success: true,
+      message: 'Mascota marcada como recuperada',
+      petId: id,
+      newStatus: 'recovered',
+      clinicId,
+      recoveryDate
+    });
+  } catch (error) {
+    console.error('Error en recover:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error al marcar como recuperada'
+    });
+  }
 });
 
-// DELETE /api/admin/pets/:id - Eliminar reporte
-router.delete('/pets/:id', isAdmin, (req, res) => {
-  const { id } = req.params;
+// DELETE /api/admin/pets/:id - Eliminar reporte (realmente funcional)
+router.delete('/pets/:id', isAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const adminState = getAdminState();
 
-  // TODO: Eliminar de BD
-  res.json({
-    success: true,
-    message: 'Reporte eliminado',
-    petId: id
-  });
+    // Marcar como eliminado en nuestro estado
+    adminState.deletedReports.push(id);
+    saveAdminState(adminState);
+
+    // Intentar eliminar de geoservice
+    await deleteFromGeoService(id);
+
+    res.json({
+      success: true,
+      message: 'Reporte eliminado correctamente',
+      petId: id
+    });
+  } catch (error) {
+    console.error('Error en delete:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error al eliminar reporte'
+    });
+  }
 });
 
 // PUT /api/admin/pets/:id/notes
 router.put('/pets/:id/notes', isAdmin, (req, res) => {
-  const { id } = req.params;
-  const { notes } = req.body;
+  try {
+    const { id } = req.params;
+    const { notes } = req.body;
 
-  res.json({
-    success: true,
-    message: 'Notas actualizadas',
-    petId: id,
-    notes
-  });
+    const adminState = getAdminState();
+
+    // Mantener el estado anterior pero actualizar las notas
+    if (!adminState.reportStates[id]) {
+      adminState.reportStates[id] = { status: 'pending' };
+    }
+
+    adminState.reportStates[id].notes = notes || '';
+    adminState.reportStates[id].notesUpdatedAt = new Date().toISOString();
+
+    saveAdminState(adminState);
+
+    res.json({
+      success: true,
+      message: 'Notas actualizadas correctamente',
+      petId: id,
+      notes
+    });
+  } catch (error) {
+    console.error('Error al actualizar notas:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error al actualizar notas'
+    });
+  }
 });
 
 export default router;
