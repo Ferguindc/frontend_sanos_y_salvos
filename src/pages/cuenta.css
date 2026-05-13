@@ -2,7 +2,7 @@
 
 .cuenta-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2D4059 0%, #1B2838 100%);
   padding: 40px 20px;
   margin-top: 150px;
 }
@@ -31,7 +31,7 @@
 
 .cuenta-header h1 {
   font-size: 2rem;
-  color: #333;
+  color: #2D4059;
   margin: 0;
 }
 
@@ -41,10 +41,10 @@
 
 .info-section h2 {
   font-size: 1.3rem;
-  color: #333;
+  color: #2D4059;
   margin: 0 0 20px 0;
   padding-bottom: 10px;
-  border-bottom: 2px solid #667eea;
+  border-bottom: 2px solid #FF844B;
 }
 
 .info-grid {
@@ -59,13 +59,13 @@
   padding: 16px;
   background: #f9f9f9;
   border-radius: 8px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #FF844B;
 }
 
 .info-item label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #667eea;
+  color: #FF844B;
   margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -73,7 +73,7 @@
 
 .info-item p {
   font-size: 1rem;
-  color: #333;
+  color: #2D4059;
   margin: 0;
   font-weight: 500;
 }
@@ -100,14 +100,14 @@
 }
 
 .btn-primary {
-  background: #667eea;
+  background: #2D4059;
   color: white;
 }
 
 .btn-primary:hover {
-  background: #5568d3;
+  background: #1B2838;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(45, 64, 89, 0.4);
 }
 
 .btn-danger {

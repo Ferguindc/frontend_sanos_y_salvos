@@ -150,12 +150,12 @@ textarea {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ff1493;
+  background: #FF844B;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff69b4;
+  background: #FF844B;
 }
 
 /* Remove default link styling */
@@ -173,7 +173,7 @@ ul, ol {
 
 /* Focus styles for accessibility */
 :focus-visible {
-  outline: 2px solid #ff1493;
+  outline: 2px solid #FF844B;
   outline-offset: 2px;
 }
 

@@ -11,14 +11,14 @@
 .section-title {
   font-size: 48px;
   font-weight: 800;
-  color: #2c3e50;
+  color: #2D4059;
   text-align: center;
   margin-bottom: 10px;
 }
 
 .section-subtitle {
   font-size: 16px;
-  color: #95a5a6;
+  color: #70D6BC;
   text-align: center;
   margin-bottom: 50px;
 }
@@ -42,7 +42,7 @@
 .service-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-  border-top-color: #ff1493;
+  border-top-color: #FF844B;
 }
 
 .service-icon {
@@ -53,7 +53,7 @@
 .service-title {
   font-size: 22px;
   font-weight: 700;
-  color: #2c3e50;
+  color: #2D4059;
   margin-bottom: 15px;
 }
 
@@ -65,14 +65,14 @@
 }
 
 .service-link {
-  color: #ff1493;
+  color: #FF844B;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s;
 }
 
 .service-link:hover {
-  color: #ff69b4;
+  color: #FF6B2C;
 }
 
 /* Mobile Responsive */

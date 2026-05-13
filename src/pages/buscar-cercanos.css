@@ -2,7 +2,7 @@
 
 .buscar-cercanos-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2D4059 0%, #1B2838 100%);
   padding: 40px 20px;
   margin-top: 150px;
 }
@@ -35,19 +35,19 @@
 }
 
 .close-btn:hover {
-  background: #e0e0e0;
+  background: #E8ECF0;
   transform: scale(1.1);
 }
 
 .header-content h1 {
   margin: 0 0 8px 0;
-  color: #333;
+  color: #2D4059;
   font-size: 2rem;
 }
 
 .header-content p {
   margin: 0;
-  color: #666;
+  color: #70D6BC;
   font-size: 1rem;
 }
 
@@ -74,12 +74,12 @@
 
 .auth-required h2 {
   font-size: 1.8rem;
-  color: #333;
+  color: #2D4059;
   margin: 0 0 12px 0;
 }
 
 .auth-required p {
-  color: #666;
+  color: #70D6BC;
   font-size: 1.05rem;
   margin: 0 0 30px 0;
   line-height: 1.6;
@@ -87,7 +87,7 @@
 
 .login-button {
   padding: 14px 32px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #FF844B 0%, #FF6B2C 100%);
   color: white;
   border: none;
   border-radius: 6px;
@@ -95,7 +95,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 132, 75, 0.3);
 }
 
 .login-button:hover {

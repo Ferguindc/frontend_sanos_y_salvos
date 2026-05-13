@@ -1,6 +1,6 @@
 .login-section {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2D4059 0%, #1B2838 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,13 +52,13 @@
 
 .login-box h2 {
   font-size: 32px;
-  color: #2c3e50;
+  color: #2D4059;
   margin-bottom: 10px;
   font-weight: 700;
 }
 
 .login-box p {
-  color: #95a5a6;
+  color: #70D6BC;
   margin-bottom: 30px;
   font-size: 14px;
 }
@@ -79,7 +79,7 @@
 
 .form-group label {
   display: block;
-  color: #2c3e50;
+  color: #2D4059;
   font-weight: 600;
   margin-bottom: 8px;
   font-size: 14px;
@@ -88,7 +88,7 @@
 .form-group input {
   width: 100%;
   padding: 12px 15px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #E8ECF0;
   border-radius: 8px;
   font-size: 14px;
   transition: all 0.3s;
@@ -96,8 +96,8 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #2D4059;
+  box-shadow: 0 0 0 3px rgba(45, 64, 89, 0.1);
 }
 
 .form-group input:disabled {
@@ -106,7 +106,7 @@
 }
 
 .login-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #FF844B 0%, #FF6B2C 100%);
   color: white;
   border: none;
   padding: 12px 20px;
@@ -120,7 +120,7 @@
 
 .login-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 20px rgba(255, 132, 75, 0.3);
 }
 
 .login-btn:disabled {
@@ -137,17 +137,17 @@
 }
 
 .login-links a {
-  color: #667eea;
+  color: #2D4059;
   text-decoration: none;
   transition: color 0.3s;
 }
 
 .login-links a:hover {
-  color: #764ba2;
+  color: #FF844B;
 }
 
 .login-image {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2D4059 0%, #1B2838 100%);
   color: white;
   display: flex;
   flex-direction: column;

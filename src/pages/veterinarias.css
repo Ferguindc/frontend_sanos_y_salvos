@@ -1,6 +1,6 @@
 .veterinarias-section {
   padding: 80px 20px;
-  background: linear-gradient(135deg, #f0f4ff 0%, #f9f1ff 50%, #fff5f9 100%);
+  background: linear-gradient(135deg, #F7F9FC 0%, #E8F1FF 50%, #FCF5F1 100%);
   min-height: 100vh;
 }
 
@@ -12,14 +12,14 @@
 .veterinarias-title {
   font-size: 48px;
   font-weight: 800;
-  color: #2c3e50;
+  color: #2D4059;
   text-align: center;
   margin-bottom: 15px;
 }
 
 .veterinarias-subtitle {
   font-size: 16px;
-  color: #95a5a6;
+  color: #70D6BC;
   text-align: center;
   margin-bottom: 50px;
 }
@@ -45,11 +45,11 @@
 .vet-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-  border-color: #ff1493;
+  border-color: #FF844B;
 }
 
 .vet-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2D4059 0%, #1B2838 100%);
   color: white;
   padding: 30px;
   text-align: center;
@@ -92,7 +92,7 @@
 .vet-name {
   font-size: 22px;
   font-weight: 700;
-  color: #2c3e50;
+  color: #2D4059;
   margin-bottom: 20px;
 }
 
@@ -118,14 +118,14 @@
 }
 
 .info-row a {
-  color: #ff1493;
+  color: #FF844B;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s;
 }
 
 .info-row a:hover {
-  color: #ff69b4;
+  color: #FF6B2C;
   text-decoration: underline;
 }
 
@@ -136,7 +136,7 @@
 .vet-services h4 {
   font-size: 14px;
   font-weight: 700;
-  color: #2c3e50;
+  color: #2D4059;
   margin-bottom: 10px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -150,8 +150,8 @@
 }
 
 .vet-services li {
-  background: #f0f4ff;
-  color: #667eea;
+  background: #E8F1FF;
+  color: #2D4059;
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 12px;
@@ -180,7 +180,7 @@
 }
 
 .btn-call {
-  background: linear-gradient(135deg, #ff1493, #ff69b4);
+  background: linear-gradient(135deg, #FF844B, #FF6B2C);
   color: white;
 }
 
@@ -191,8 +191,8 @@
 
 .btn-email {
   background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
+  color: #2D4059;
+  border: 2px solid #2D4059;
 }
 
 .btn-email:hover {
@@ -202,7 +202,7 @@
 
 .veterinarias-notice {
   background: linear-gradient(135deg, #fff9e6 0%, #ffe6f0 100%);
-  border-left: 4px solid #ff1493;
+  border-left: 4px solid #FF844B;
   padding: 30px;
   border-radius: 10px;
   text-align: center;
@@ -210,7 +210,7 @@
 
 .veterinarias-notice h3 {
   font-size: 18px;
-  color: #2c3e50;
+  color: #2D4059;
   margin-bottom: 10px;
   font-weight: 700;
 }

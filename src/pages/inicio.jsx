@@ -4,6 +4,8 @@ import { useAuth } from '../hooks/useAuth';
 import Header from '../components/Header/Header';
 import Hero from '../components/Hero/Hero';
 import Services from '../components/Services/Services';
+import VeterinaryAbout from '../components/VeterinaryAbout/VeterinaryAbout';
+import TestimonialCarousel from '../components/TestimonialCarousel/TestimonialCarousel';
 import LoginSection from '../components/LoginSection/LoginSection';
 import MapSection from '../components/MapSection/MapSection';
 import BuscarCercanos from './buscar-cercanos';
@@ -29,6 +31,8 @@ export default function Inicio() {
         <>
           <Hero setShowLogin={() => setCurrentPage('home')} setShowMap={() => setCurrentPage('home')} />
           <Services />
+          <VeterinaryAbout />
+          <TestimonialCarousel />
         </>
       )}
 

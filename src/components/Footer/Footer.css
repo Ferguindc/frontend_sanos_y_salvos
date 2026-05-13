@@ -1,5 +1,5 @@
 .footer {
-  background: #2c3e50;
+  background: #2D4059;
   color: #ecf0f1;
   padding: 60px 20px 20px;
 }
@@ -17,7 +17,7 @@
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 10px;
-  color: #ff1493;
+  color: #FF844B;
 }
 
 .footer-section h4 {
@@ -48,8 +48,8 @@
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  background-color: rgba(255, 20, 147, 0.2);
-  color: #ff1493;
+  background-color: rgba(255, 132, 75, 0.2);
+  color: #FF844B;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -59,7 +59,7 @@
 }
 
 .social-links a:hover {
-  background-color: #ff1493;
+  background-color: #FF844B;
   color: white;
   transform: translateY(-3px);
 }
@@ -80,11 +80,11 @@
 }
 
 .footer-section ul a:hover {
-  color: #ff1493;
+  color: #FF844B;
 }
 
 .contact-info a {
-  color: #ff1493;
+  color: #FF844B;
   text-decoration: none;
   font-weight: 600;
 }
@@ -107,7 +107,7 @@
 
 .footer-bottom p {
   font-size: 13px;
-  color: #95a5a6;
+  color: #70D6BC;
 }
 
 .footer-links {
@@ -117,17 +117,17 @@
 }
 
 .footer-links a {
-  color: #95a5a6;
+  color: #70D6BC;
   text-decoration: none;
   transition: color 0.3s;
 }
 
 .footer-links a:hover {
-  color: #ff1493;
+  color: #FF844B;
 }
 
 .footer-links span {
-  color: #95a5a6;
+  color: #70D6BC;
 }
 
 /* Mobile Responsive */

@@ -44,18 +44,18 @@
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: #2c3e50;
+  color: #2D4059;
   z-index: 10;
   transition: color 0.3s;
 }
 
 .modal-close-btn:hover {
-  color: #ff1493;
+  color: #FF844B;
 }
 
 .auth-tabs {
   display: flex;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 2px solid #E8ECF0;
   flex-shrink: 0;
 }
 
@@ -66,7 +66,7 @@
   border: none;
   font-size: 15px;
   font-weight: 600;
-  color: #95a5a6;
+  color: #70D6BC;
   cursor: pointer;
   transition: all 0.3s;
   border-bottom: 3px solid transparent;
@@ -75,13 +75,13 @@
 }
 
 .auth-tab:hover {
-  color: #2c3e50;
-  background-color: #f8f9fa;
+  color: #2D4059;
+  background-color: #F7F9FC;
 }
 
 .auth-tab.active {
-  color: #ff1493;
-  border-bottom-color: #ff1493;
+  color: #FF844B;
+  border-bottom-color: #FF844B;
 }
 
 .auth-form {
@@ -97,7 +97,7 @@
 
 .form-group label {
   display: block;
-  color: #2c3e50;
+  color: #2D4059;
   font-weight: 600;
   margin-bottom: 6px;
   font-size: 13px;
@@ -106,7 +106,7 @@
 .form-group input {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #E8ECF0;
   border-radius: 8px;
   font-size: 13px;
   transition: all 0.3s;
@@ -115,8 +115,8 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #ff1493;
-  box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.1);
+  border-color: #FF844B;
+  box-shadow: 0 0 0 3px rgba(255, 132, 75, 0.1);
 }
 
 .form-group input:disabled {
@@ -143,7 +143,7 @@
 .auth-submit-btn {
   width: 100%;
   padding: 11px 20px;
-  background: linear-gradient(135deg, #ff1493, #ff69b4);
+  background: linear-gradient(135deg, #FF844B, #FF6B2C);
   color: white;
   border: none;
   border-radius: 8px;
@@ -156,7 +156,7 @@
 
 .auth-submit-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(255, 20, 147, 0.3);
+  box-shadow: 0 8px 20px rgba(255, 132, 75, 0.3);
 }
 
 .auth-submit-btn:disabled {
@@ -179,7 +179,7 @@
 .auth-toggle-btn {
   background: none;
   border: none;
-  color: #ff1493;
+  color: #FF844B;
   font-weight: 600;
   cursor: pointer;
   transition: color 0.3s;
@@ -187,7 +187,7 @@
 }
 
 .auth-toggle-btn:hover {
-  color: #ff69b4;
+  color: #FF6B2C;
   text-decoration: underline;
 }
 
@@ -256,10 +256,10 @@
 }
 
 .auth-form::-webkit-scrollbar-thumb {
-  background: #ff1493;
+  background: #FF844B;
   border-radius: 10px;
 }
 
 .auth-form::-webkit-scrollbar-thumb:hover {
-  background: #ff69b4;
+  background: #FF844B;
 }
